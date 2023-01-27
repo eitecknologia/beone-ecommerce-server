@@ -32,12 +32,12 @@ export const validateJwt = async (req: Request, res: Response, next: NextFunctio
             });
         }
 
-        /*         req.user = {
-                    userid: user.userid,
-                    name: user.name,
-                    lastname: user.lastname,
-                    roleid: user.roleid
-                } */
+        req.user = {
+            userid: user.userid,
+            name: user.name,
+            lastname: user.lastname,
+            roleid: user.roleid
+        }
 
         return next();
     } catch (error) {

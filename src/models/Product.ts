@@ -4,11 +4,18 @@ import ProductImages from './ProductImage';
 
 interface Product extends Model<InferAttributes<Product>, InferCreationAttributes<Product>> {
     rewardid: CreationOptional<number>;
-    name: string;
     description: CreationOptional<string>;
+    weigth: CreationOptional<string>;
+    width: CreationOptional<string>;
+    mts: CreationOptional<number>;
+    moq: CreationOptional<string>;
+    deliverytime: CreationOptional<number>;
+    fobusd: number;
+    certificates: CreationOptional<string>;
+    notes: CreationOptional<string>;
+    stock: CreationOptional<number | null>;
     isactive: CreationOptional<boolean>;
     timecreated: CreationOptional<Date>;
-    stock: CreationOptional<number | null>
     categoryid: number;
 }
 
@@ -19,13 +26,48 @@ const Product = sequelize.define<Product>('beone_products', {
         primaryKey: true,
         autoIncrement: true
     },
-    name: {
-        type: DataTypes.STRING(100),
-        allowNull: false
-    },
     description: {
         type: DataTypes.STRING(1000),
-        allowNull: true
+        allowNull: false,
+    },
+    weigth: {
+        type: DataTypes.STRING(50),
+        allowNull: true,
+        defaultValue: null
+    },
+    width: {
+        type: DataTypes.STRING(50),
+        allowNull: true,
+        defaultValue: null
+    },
+    mts: {
+        type: DataTypes.FLOAT,
+        allowNull: true,
+        defaultValue: null
+    },
+    moq: {
+        type: DataTypes.STRING(50),
+        allowNull: true,
+        defaultValue: null
+    },
+    deliverytime: {
+        type: DataTypes.STRING(50),
+        allowNull: true,
+        defaultValue: null
+    },
+    fobusd: {
+        type: DataTypes.FLOAT,
+        allowNull: false
+    },
+    certificates: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+        defaultValue: null
+    },
+    notes: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+        defaultValue: null
     },
     stock: {
         type: DataTypes.INTEGER,
