@@ -1,8 +1,8 @@
 import express, { Express, Response } from 'express';
 import morgan = require('morgan');
-import cors from 'cors'
+import cors from 'cors';
 
-import { testRouter } from '../routes';
+import { testRouter, authRouter, adminRouter } from '../routes';
 import sequelize from '../database/config';
 import '../models/index';
 
@@ -10,16 +10,20 @@ export class Server {
 
     public app: Express;
     public port: string;
-    public prefix = "/api/";
+    public prefix = "/api";
     public paths: {
-        testServer: string
+        testServer: string,
+        auth: string,
+        admin: string
     }
 
     constructor() {
         this.app = express();
         this.port = process.env.PORT || '3000';
         this.paths = {
-            testServer: '/'
+            testServer: '/',
+            auth: `${this.prefix}/auth`,
+            admin: `${this.prefix}/admin`
         }
 
         /* Middleware */
@@ -36,7 +40,7 @@ export class Server {
 
     middlewares() {
         /* Options for cors midddleware */
-        this.app.use(cors);
+        this.app.use(cors());
 
         /* Body Parse */
         this.app.use(express.json());
@@ -50,6 +54,8 @@ export class Server {
     routes() {
         /* Defined Routes */
         this.app.use(this.paths.testServer, testRouter);
+        this.app.use(this.paths.auth, authRouter);
+        this.app.use(this.paths.admin, adminRouter);
 
         /* Service not found - 404 */
         this.app.use((_req, res: Response) => {
