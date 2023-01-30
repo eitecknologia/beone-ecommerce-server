@@ -1,8 +1,9 @@
 import express, { Express, Response } from 'express';
+import fileUpload = require('express-fileupload');
 import morgan = require('morgan');
 import cors from 'cors';
 
-import { testRouter, authRouter, adminRouter } from '../routes';
+import { testRouter, authRouter, adminRouter, fileRouter, categoryRouter, productRouter } from '../routes';
 import sequelize from '../database/config';
 import '../models/index';
 
@@ -14,7 +15,10 @@ export class Server {
     public paths: {
         testServer: string,
         auth: string,
-        admin: string
+        admin: string,
+        file: string,
+        category: string,
+        product: string
     }
 
     constructor() {
@@ -23,7 +27,10 @@ export class Server {
         this.paths = {
             testServer: '/',
             auth: `${this.prefix}/auth`,
-            admin: `${this.prefix}/admin`
+            admin: `${this.prefix}/admin`,
+            file: `${this.prefix}/file`,
+            category: `${this.prefix}/category`,
+            product: `${this.prefix}/product`,
         }
 
         /* Middleware */
@@ -49,6 +56,13 @@ export class Server {
         /* Morgan config */
         (this.app.get('env') !== 'production') && this.app.use(morgan('dev'));
 
+        /* File upload config*/
+        this.app.use(fileUpload({
+            useTempFiles: true,
+            tempFileDir: '/tmp/',
+            createParentPath: true
+        }));
+
     }
 
     routes() {
@@ -56,6 +70,9 @@ export class Server {
         this.app.use(this.paths.testServer, testRouter);
         this.app.use(this.paths.auth, authRouter);
         this.app.use(this.paths.admin, adminRouter);
+        this.app.use(this.paths.file, fileRouter);
+        this.app.use(this.paths.category, categoryRouter);
+        this.app.use(this.paths.product, productRouter);
 
         /* Service not found - 404 */
         this.app.use((_req, res: Response) => {

@@ -42,12 +42,12 @@ const Category = sequelize.define<Category>('beone_categories', {
 Category.hasMany(Product, {
     foreignKey: "categoryid",
     sourceKey: "categoryid",
-    as: 'categories'
+    as: 'products'
 })
 
 Product.belongsTo(Category, {
     foreignKey: 'categoryid',
-    as: 'category'
+    as: 'product'
 })
 
 

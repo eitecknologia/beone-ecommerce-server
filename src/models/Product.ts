@@ -3,7 +3,7 @@ import sequelize from '../database/config';
 import ProductImages from './ProductImage';
 
 interface Product extends Model<InferAttributes<Product>, InferCreationAttributes<Product>> {
-    rewardid: CreationOptional<number>;
+    productid: CreationOptional<number>;
     description: CreationOptional<string>;
     weigth: CreationOptional<string>;
     width: CreationOptional<string>;
@@ -13,7 +13,7 @@ interface Product extends Model<InferAttributes<Product>, InferCreationAttribute
     fobusd: number;
     certificates: CreationOptional<string>;
     notes: CreationOptional<string>;
-    stock: CreationOptional<number | null>;
+    stock: CreationOptional<number>;
     isactive: CreationOptional<boolean>;
     timecreated: CreationOptional<Date>;
     categoryid: number;
@@ -21,7 +21,7 @@ interface Product extends Model<InferAttributes<Product>, InferCreationAttribute
 
 
 const Product = sequelize.define<Product>('beone_products', {
-    rewardid: {
+    productid: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
@@ -93,13 +93,13 @@ const Product = sequelize.define<Product>('beone_products', {
 });
 
 Product.hasMany(ProductImages, {
-    foreignKey: 'rewardid',
-    sourceKey: 'rewardid',
+    foreignKey: 'productid',
+    sourceKey: 'productid',
     as: 'images'
 });
 
 ProductImages.belongsTo(Product, {
-    foreignKey: 'rewardid',
+    foreignKey: 'productid',
     as: 'image'
 });
 

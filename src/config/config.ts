@@ -17,3 +17,7 @@ process.env.TOKEN_SEED = process.env.TOKEN_SEED || "T0k3nSe3dB30n3_@";
 process.env.MAIL_USER = process.env.MAIL_USER || "cristhianalejandroguadalupe@gmail.com";
 process.env.MAIL_PSWD = process.env.MAIL_PSWD || "qravllwtyhecyewi";
 
+/* CLOUDINARY */
+process.env.CLOUDINARY_URL = process.env.CLOUDINARY_URL || "cloudinary://129278158545247:J02i5Q-zlOqUyu7__UK4wIqMGvk@db6g5aoec";
+
+
