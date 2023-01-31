@@ -4,10 +4,9 @@ import sequelize from '../database/config';
 interface User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     userid: CreationOptional<number>;
     name: string;
-    ci: string;
-    city: string;
-    province: string;
     lastname: string;
+    ci: string;
+    address: string;
     email: string;
     password: string;
     isactive: CreationOptional<boolean | null>;
@@ -33,12 +32,8 @@ const User = sequelize.define<User>('beone_users', {
         type: DataTypes.STRING(50),
         allowNull: false,
     },
-    province: {
-        type: DataTypes.STRING(50),
-        allowNull: false,
-    },
-    city: {
-        type: DataTypes.STRING(50),
+    address: {
+        type: DataTypes.STRING(150),
         allowNull: false,
     },
     email: {

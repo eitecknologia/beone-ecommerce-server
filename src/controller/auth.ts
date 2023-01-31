@@ -11,7 +11,7 @@ import { generateJwt } from "../helpers/generate-jwt";
 /* Register Admin Function */
 export const registerAdmin = async (req: Request, res: Response) => {
     try {
-        let { ci, name, lastname, email, city, province }: User = req.body;
+        let { ci, name, lastname, email, address }: User = req.body;
 
         /* Search if the roles table is Ready */
         const rolesExists = await Role.findByPk(process.env.ADMIN_ID);
@@ -48,8 +48,7 @@ export const registerAdmin = async (req: Request, res: Response) => {
             ci,
             name,
             lastname,
-            province,
-            city,
+            address,
             email,
             password,
             roleid: Number(process.env.ADMIN_ID)
@@ -65,8 +64,7 @@ export const registerAdmin = async (req: Request, res: Response) => {
                 ci: user.ci,
                 name: user.name,
                 lastname: user.lastname,
-                province: user.province,
-                city: user.city,
+                address: user.address,
                 email: user.email
             }
         })

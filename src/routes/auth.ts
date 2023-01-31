@@ -10,8 +10,7 @@ authRouter.post('/register_admin', [
     check('ci', 'El CI es obligatorio').notEmpty().isNumeric().isLength({ min: 10 }),
     check('name', 'El nombre es obligatorio').notEmpty(),
     check('lastname', 'El apellido es obligatorio').notEmpty(),
-    check('city', 'La ciudad es obligatoria').notEmpty(),
-    check('province', 'La provincia es obligatoria').notEmpty(),
+    check('address', 'La dirección es obligatoria').notEmpty(),
     check('email', 'Ingrese un correo válido').isEmail(),
     fieldsValidate
 ], registerAdmin);

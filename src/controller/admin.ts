@@ -13,7 +13,7 @@ export const getAllAdmins = async (req: Request, res: Response) => {
 
         /* Get users data */
         const { count: total, rows: users } = await User.findAndCountAll({
-            attributes: ['userid', 'ci', 'name', 'lastname', 'province', 'city', 'email'],
+            attributes: ['userid', 'ci', 'name', 'lastname', 'address', 'email'],
             where: { roleid: process.env.ADMIN_ID, isactive: true },
             order: [['timecreated', 'DESC']],
             offset: (offset - sizeSend),
@@ -46,7 +46,7 @@ export const findAdminById = async (req: Request, res: Response) => {
         const { id } = req.params;
 
         const user = await User.findOne({
-            attributes: ['userid', 'ci', 'name', 'lastname', 'province', 'city', 'email'],
+            attributes: ['userid', 'ci', 'name', 'lastname', 'address', 'email'],
             where: { userid: id }
         });
 
@@ -69,7 +69,7 @@ export const findAdminById = async (req: Request, res: Response) => {
 export const updateAdmin = async (req: Request, res: Response) => {
     try {
 
-        let { ci, name, lastname, email, password, city, province }: User = req.body;
+        let { ci, name, lastname, email, password, address }: User = req.body;
         const { userid } = req.user;
 
         /* Verify that the new credentials not exist */
@@ -101,7 +101,7 @@ export const updateAdmin = async (req: Request, res: Response) => {
         }
 
         await User.update({
-            name, lastname, email, password, ci, city, province
+            name, lastname, email, password, ci, address
         }, { where: { userid } });
 
         return res.status(200).json({
