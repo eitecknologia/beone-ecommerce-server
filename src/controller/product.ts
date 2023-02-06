@@ -3,12 +3,12 @@ import { deleteFiles } from "../helpers/files";
 import { Product, ProductImages } from "../models";
 
 /* Register product Function */
-export const createProduct = async (req: Request, res: Response) => {
+export const createProduct = async (_req: Request, res: Response) => {
     try {
-        const { categoryid } = req.body;
+       // const { categoryid } = req.body;
 
         /* Get the body data */
-        const { description, weigth, width, mts, moq, deliverytime, fobusd, certificates, notes, stock }: Product = req.body;
+/*         const { description, weigth, width, mts, moq, deliverytime, fobusd, certificates, notes, stock }: Product = req.body;
         const imagesArray: ProductImages[] = req.body.images || [];
 
         const product = await Product.create({
@@ -30,7 +30,7 @@ export const createProduct = async (req: Request, res: Response) => {
                 productid: product.productid,
                 url
             })
-        }
+        } */
 
         return res.status(201).json({
             ok: true,
