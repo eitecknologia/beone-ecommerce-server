@@ -1,6 +1,6 @@
 import { DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
 import sequelize from '../database/config';
-import Product from './Product';
+import CategorySubcategory from './CategorySubcategory';
 
 interface Category extends Model<InferAttributes<Category>, InferCreationAttributes<Category>> {
     categoryid: CreationOptional<number>;
@@ -39,15 +39,15 @@ const Category = sequelize.define<Category>('beone_categories', {
 });
 
 /* Relation with Products one to many */
-Category.hasMany(Product, {
+Category.hasMany(CategorySubcategory, {
     foreignKey: "categoryid",
     sourceKey: "categoryid",
-    as: 'products'
+    as: 'subcategories'
 })
 
-Product.belongsTo(Category, {
+CategorySubcategory.belongsTo(Category, {
     foreignKey: 'categoryid',
-    as: 'product'
+    as: 'subcategory'
 })
 
 

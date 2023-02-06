@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { Category, Product } from "../models";
 import { validatePaginateParams, infoPaginate } from '../helpers/pagination';
 import ProductImages from '../models/ProductImage';
-import { deleteFiles } from "../helpers/files";
 
 /* Register categories Function */
 export const createCategory = async (req: Request, res: Response) => {
@@ -15,7 +14,6 @@ export const createCategory = async (req: Request, res: Response) => {
             name: name.toUpperCase(),
             description
         })
-
         return res.status(201).json({
             ok: true,
             msg: "Categoria Creada"
@@ -128,26 +126,6 @@ export const deleteCategory = async (req: Request, res: Response) => {
 
         const { id } = req.params;
 
-        /* Get all products of the category */
-        const productsArray = await Product.findAll({ where: { categoryid: id } });
-
-        /* Delete all images of products of the category */
-        for (const { productid } of productsArray) {
-            const images: ProductImages[] = await ProductImages.findAll({ where: { productid } }) || [];
-            /* Delete the url images from the DB */
-            await ProductImages.destroy({ where: { productid } });
-
-            /* Verify if exist at least one image */
-            if (images.length > 0) {
-                for (const image of images) {
-                    /* Delete the image from cloudinary */
-                    await deleteFiles(image.url)
-                }
-            }
-        }
-
-        /* Delete all products of the category */
-        await Product.update({ isactive: false }, { where: { categoryid: id } });
         /* Delete the category */
         await Category.update({ isactive: false }, { where: { categoryid: id } });
 

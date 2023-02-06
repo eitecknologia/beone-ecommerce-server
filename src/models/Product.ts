@@ -1,10 +1,12 @@
 import { DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
 import sequelize from '../database/config';
 import ProductImages from './ProductImage';
+import SubcategoryProducts from './SubcategoryProduct';
 
 interface Product extends Model<InferAttributes<Product>, InferCreationAttributes<Product>> {
     productid: CreationOptional<number>;
-    description: CreationOptional<string>;
+    name: string;
+    description: string;
     weigth: CreationOptional<string>;
     width: CreationOptional<string>;
     mts: CreationOptional<number>;
@@ -16,7 +18,6 @@ interface Product extends Model<InferAttributes<Product>, InferCreationAttribute
     stock: CreationOptional<number>;
     isactive: CreationOptional<boolean>;
     timecreated: CreationOptional<Date>;
-    categoryid: number;
 }
 
 
@@ -25,6 +26,10 @@ const Product = sequelize.define<Product>('beone_products', {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
+    },
+    name: {
+        type: DataTypes.STRING(50),
+        allowNull: false
     },
     description: {
         type: DataTypes.STRING(1000),
@@ -83,15 +88,24 @@ const Product = sequelize.define<Product>('beone_products', {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: DataTypes.NOW
-    },
-    categoryid: {
-        type: DataTypes.INTEGER,
-        allowNull: false
     }
 }, {
     timestamps: false
 });
 
+/* Relation with SubcategoryProduct table */
+Product.hasMany(SubcategoryProducts, {
+    foreignKey: 'productid',
+    sourceKey: 'productid',
+    as: 'products_subcategories'
+});
+
+SubcategoryProducts.belongsTo(Product, {
+    foreignKey: 'productid',
+    as: 'product_subcategory'
+});
+
+/* Relation with productImages table */
 Product.hasMany(ProductImages, {
     foreignKey: 'productid',
     sourceKey: 'productid',

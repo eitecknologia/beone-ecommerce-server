@@ -14,7 +14,7 @@ categoryRouter.post('/create', [
     validateJwt,
     isAdminRole,
     check('name', 'El nombre es obligatorio').trim().notEmpty(),
-    check('description', 'La descripción es obligatoria').trim().notEmpty(),
+    check('description', 'La descripción es obligatoria').optional().trim().notEmpty(),
     fieldsValidate
 ], createCategory);
 

@@ -1,4 +1,4 @@
-import { Category, Role, User, Product } from "../models";
+import { Category, Role, User, Product, Subcategory, CategorySubcategory } from "../models";
 
 /* Create Defaul Roles */
 export const createDefaultRoles = async () => {
@@ -20,6 +20,28 @@ export const verifyAdminId = async (id: number) => {
     const existUser = await User.findOne({ where: { userid: id, roleid: process.env.ADMIN_ID, isactive: true } });
     if (!existUser) {
         throw new Error(`Administrador no encontrado`);
+    }
+
+    return true;
+}
+
+/* Verify if exist subcategory id */
+export const verifysubCategoryId = async (id: number) => {
+    /* Search if the subcategory exists */
+    const existsubCategory = await Subcategory.findOne({ where: { subcategoryid: id, isactive: true } });
+    if (!existsubCategory) {
+        throw new Error(`Subcategoría no encontrada`);
+    }
+
+    return true;
+}
+
+/* Verify if exist a register in CategoriesSubcategories table of a id */
+export const verifyRegisterOfCategoriesSubcategories = async (id: number) => {
+    /* Search if the register exists */
+    const existsubRegister = await CategorySubcategory.findOne({ where: { casub: id } });
+    if (!existsubRegister) {
+        throw new Error(`Registro no encontrado`);
     }
 
     return true;

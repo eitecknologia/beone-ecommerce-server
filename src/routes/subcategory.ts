@@ -1,0 +1,52 @@
+import { Router } from "express";
+import { check } from 'express-validator';
+
+import { isAdminRole } from "../middlewares.ts/roles-validate";
+import { fieldsValidate } from "../middlewares.ts/validate-fields";
+import { validateJwt } from '../helpers/validate-jwt';
+import { createSubcategory, getSubcategories, assignSubcategories, deleteDSubcategory } from '../controller/subcategory';
+import { verifyCategoryId, verifysubCategoryId, verifyRegisterOfCategoriesSubcategories } from '../helpers/db-helpers';
+import { validateSubcategoriesInCategory } from '../middlewares.ts/db-validate';
+
+const subcategoryRouter: Router = Router();
+
+/* Service - Register a subcategory */
+subcategoryRouter.post('/create', [
+    validateJwt,
+    isAdminRole,
+    check('name', 'El nombre es obligatorio').trim().notEmpty(),
+    check('description', 'La descripción es obligatoria').optional().trim().notEmpty(),
+    fieldsValidate
+], createSubcategory);
+
+/* Service - Get all subcategories availables and not availables by category */
+subcategoryRouter.get('/get_availability/:categoryid', [
+    validateJwt,
+    isAdminRole,
+    check('categoryid', 'Formato de id incorrecto').isNumeric(),
+    check('categoryid').custom(verifyCategoryId),
+    fieldsValidate
+], getSubcategories);
+
+/* Service - Assign to category */
+subcategoryRouter.post('/assign_category', [
+    validateJwt,
+    isAdminRole,
+    check('categoryid', 'Formato de id incorrecto').isNumeric(),
+    check('categoryid').custom(verifyCategoryId),
+    check('subcategories', 'Las subcategorías debe ser una lista no vacía').isArray().notEmpty(),
+    check('subcategories.*.subcategoryid').custom(verifysubCategoryId),
+    validateSubcategoriesInCategory,
+    fieldsValidate
+], assignSubcategories);
+
+/* Service - Delete subcategory of a category */
+subcategoryRouter.delete('/delete_of_category/:casub', [
+    validateJwt,
+    isAdminRole,
+    check('casub', 'Formato de id incorrecto').isNumeric(),
+    check('casub').custom(verifyRegisterOfCategoriesSubcategories),
+    fieldsValidate
+], deleteDSubcategory);
+
+export default subcategoryRouter;

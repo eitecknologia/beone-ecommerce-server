@@ -4,6 +4,7 @@ import adminRouter from './admin';
 import fileRouter from './file';
 import categoryRouter from './category';
 import productRouter from './product';
+import subcategoryRouter from './subcategory';
 
 export {
     testRouter,
@@ -11,5 +12,6 @@ export {
     adminRouter,
     fileRouter,
     categoryRouter,
+    subcategoryRouter,
     productRouter
 }

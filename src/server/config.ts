@@ -3,7 +3,7 @@ import fileUpload = require('express-fileupload');
 import morgan = require('morgan');
 import cors from 'cors';
 
-import { testRouter, authRouter, adminRouter, fileRouter, categoryRouter, productRouter } from '../routes';
+import { testRouter, authRouter, adminRouter, fileRouter, categoryRouter, productRouter, subcategoryRouter } from '../routes';
 import sequelize from '../database/config';
 import '../models/index';
 
@@ -18,7 +18,8 @@ export class Server {
         admin: string,
         file: string,
         category: string,
-        product: string
+        product: string,
+        subcategory: string,
     }
 
     constructor() {
@@ -30,6 +31,7 @@ export class Server {
             admin: `${this.prefix}/admin`,
             file: `${this.prefix}/file`,
             category: `${this.prefix}/category`,
+            subcategory: `${this.prefix}/subcategory`,
             product: `${this.prefix}/product`,
         }
 
@@ -73,6 +75,7 @@ export class Server {
         this.app.use(this.paths.file, fileRouter);
         this.app.use(this.paths.category, categoryRouter);
         this.app.use(this.paths.product, productRouter);
+        this.app.use(this.paths.subcategory, subcategoryRouter);
 
         /* Service not found - 404 */
         this.app.use((_req, res: Response) => {
