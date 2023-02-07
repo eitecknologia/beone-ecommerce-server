@@ -41,11 +41,11 @@ subcategoryRouter.post('/assign_category', [
 ], assignSubcategories);
 
 /* Service - Delete subcategory of a category */
-subcategoryRouter.delete('/delete_of_category/:casub', [
+subcategoryRouter.delete('/delete_of_category/:casubid', [
     validateJwt,
     isAdminRole,
-    check('casub', 'Formato de id incorrecto').isNumeric(),
-    check('casub').custom(verifyRegisterOfCategoriesSubcategories),
+    check('casubid', 'Formato de id incorrecto').isNumeric(),
+    check('casubid').custom(verifyRegisterOfCategoriesSubcategories),
     fieldsValidate
 ], deleteDSubcategory);
 

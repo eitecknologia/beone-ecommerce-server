@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { Category, Product } from "../models";
+import { Category, Subcategory } from "../models";
 import { validatePaginateParams, infoPaginate } from '../helpers/pagination';
-import ProductImages from '../models/ProductImage';
+import CategorySubcategory from '../models/CategorySubcategory';
 
 /* Register categories Function */
 export const createCategory = async (req: Request, res: Response) => {
@@ -70,13 +70,11 @@ export const findCategoryById = async (req: Request, res: Response) => {
         const category = await Category.findOne({
             attributes: { exclude: ['isactive', 'timecreated'] },
             include: [{
-                model: Product,
-                as: 'products',
-                attributes: { exclude: ['categoryid', 'timecreated', 'isactive'] },
+                model: CategorySubcategory,
+                as: 'subcategories',
                 include: [{
-                    model: ProductImages,
-                    as: 'images',
-                    attributes: ['url']
+                    model: Subcategory,
+                    as: 'subcategory_category'
                 }]
             }],
             where: { isactive: true, categoryid: id }

@@ -2,14 +2,14 @@ import { DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOpt
 import sequelize from '../database/config';
 
 interface CategorySubcategory extends Model<InferAttributes<CategorySubcategory>, InferCreationAttributes<CategorySubcategory>> {
-    casub: CreationOptional<number>;
+    casubid: CreationOptional<number>;
     categoryid: number;
     subcategoryid: number;
     timecreated: CreationOptional<Date>;
 }
 
 const CategorySubcategory = sequelize.define<CategorySubcategory>('beone_categories_subcategories', {
-    casub: {
+    casubid: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true

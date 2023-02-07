@@ -105,9 +105,9 @@ export const assignSubcategories = async (req: Request, res: Response) => {
 export const deleteDSubcategory = async (req: Request, res: Response) => {
     try {
 
-        const { casub } = req.params;
+        const { casubid } = req.params;
 
-        await CategorySubcategory.destroy({ where: { casub } })
+        await CategorySubcategory.destroy({ where: { casubid } })
 
         return res.status(200).json({
             ok: true,
