@@ -39,7 +39,7 @@ export const verifysubCategoryId = async (id: number) => {
 /* Verify if exist a register in CategoriesSubcategories table of a id */
 export const verifyRegisterOfCategoriesSubcategories = async (id: number) => {
     /* Search if the register exists */
-    const existsubRegister = await CategorySubcategory.findOne({ where: { casub: id } });
+    const existsubRegister = await CategorySubcategory.findOne({ where: { casubid: id } });
     if (!existsubRegister) {
         throw new Error(`Registro no encontrado`);
     }

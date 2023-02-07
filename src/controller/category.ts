@@ -70,6 +70,7 @@ export const findCategoryById = async (req: Request, res: Response) => {
         const category = await Category.findOne({
             attributes: { exclude: ['isactive', 'timecreated'] },
             include: [{
+                attributes: { exclude: ['categoryid', 'subcategoryid', 'timecreated'] },
                 model: CategorySubcategory,
                 as: 'subcategories',
                 include: [{
