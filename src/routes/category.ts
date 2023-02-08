@@ -3,7 +3,7 @@ import { check } from 'express-validator';
 
 import { isAdminRole } from "../middlewares.ts/roles-validate";
 import { fieldsValidate } from "../middlewares.ts/validate-fields";
-import { createCategory, getCategories, findCategoryById, updateCategory, deleteCategory } from '../controller/category';
+import { createCategory, getCategories, findCategoryById, updateCategory, deleteCategory, getCategoriesWithSubcategories, getSubcategoriesWithProducts } from '../controller/category';
 import { validateJwt } from '../helpers/validate-jwt';
 import { verifyCategoryId } from "../helpers/db-helpers";
 
@@ -53,5 +53,14 @@ categoryRouter.delete('/delete/:id', [
     check('id').custom(verifyCategoryId),
     fieldsValidate
 ], deleteCategory);
+
+
+/* 
+    SERVICES TO ECOMMERCE - AUTH NOT REQUIRED
+*/
+
+categoryRouter.get('/categories_subcategories', getCategoriesWithSubcategories)
+
+categoryRouter.get('/subcategories_products', getSubcategoriesWithProducts)
 
 export default categoryRouter;

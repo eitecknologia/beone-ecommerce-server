@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { Category, Subcategory } from "../models";
 import { validatePaginateParams, infoPaginate } from '../helpers/pagination';
 import CategorySubcategory from '../models/CategorySubcategory';
+import SubcategoryProducts from '../models/SubcategoryProduct';
+import Product from '../models/Product';
 
 /* Register categories Function */
 export const createCategory = async (req: Request, res: Response) => {
@@ -75,6 +77,7 @@ export const findCategoryById = async (req: Request, res: Response) => {
                 as: 'subcategories',
                 include: [{
                     model: Subcategory,
+                    attributes: { exclude: ['isactive', 'timecreated'] },
                     as: 'subcategory_category'
                 }]
             }],
@@ -103,7 +106,7 @@ export const updateCategory = async (req: Request, res: Response) => {
         let { name, description } = req.body;
         const { id } = req.params;
 
-        await Category.update({ name, description }, { where: { categoryid: id } });
+        await Category.update({ name: `${name}`.toUpperCase(), description }, { where: { categoryid: id } });
 
         return res.status(200).json({
             ok: true,
@@ -131,6 +134,97 @@ export const deleteCategory = async (req: Request, res: Response) => {
         return res.status(200).json({
             ok: true,
             msg: "Categoria eliminada"
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: "Internal Server Error",
+            error
+        })
+    }
+}
+
+/* Get all categories with each subcategories */
+export const getCategoriesWithSubcategories = async (_req: Request, res: Response) => {
+    try {
+
+        const categories = await Category.findAll({
+            attributes: ['categoryid', 'name', 'description'],
+            include: [{
+                attributes: ['casubid'],
+                model: CategorySubcategory,
+                as: 'subcategories',
+                include: [{
+                    attributes: ['subcategoryid', 'name', 'description'],
+                    model: Subcategory,
+                    as: 'subcategory_category'
+                }]
+            }],
+            where: { isactive: true },
+            order: [['timecreated', 'DESC']],
+        })
+
+        return res.status(200).json({
+            ok: true,
+            msg: "Listado de categorías con subcategorías",
+            categories
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: "Internal Server Error",
+            error
+        })
+    }
+}
+
+/* Get category with products */
+export const getSubcategoriesWithProducts = async (req: Request, res: Response) => {
+    try {
+
+        let subcategoryid = Number(req.query.subcategoryid) || null;
+
+        if (!subcategoryid) {
+            const getlastSubcategoryId = await Subcategory.findOne({
+                attributes: ['subcategoryid'],
+                order: [['timecreated', 'DESC']]
+            })
+
+            if (!getlastSubcategoryId) {
+                return res.status(400).json({
+                    ok: false,
+                    msg: "Por el momento no se encuentra disponible ninguna subcategoría"
+                })
+            }
+
+            subcategoryid = getlastSubcategoryId.subcategoryid;
+        } {
+            /* Validate the subcategory */
+            const existSubcategory = await Subcategory.findByPk(subcategoryid);
+            if (!existSubcategory) {
+                return res.status(400).json({
+                    ok: false,
+                    msg: "Subcategoría no encontrada"
+                })
+            }
+        }
+
+        const products = await SubcategoryProducts.findAll({
+            attributes: ['subprodid'],
+            include: [{
+                model: Product,
+                as: 'product_subcategory'
+            }],
+            where: { subcategoryid },
+            order: [['timecreated', 'DESC']]
+        })
+
+        return res.status(200).json({
+            ok: true,
+            msg: "Listado de productos en subcategoría",
+            products
         })
 
     } catch (error) {

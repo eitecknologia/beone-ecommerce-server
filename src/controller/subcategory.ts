@@ -11,13 +11,36 @@ export const createSubcategory = async (req: Request, res: Response) => {
         const { name, description }: Subcategory = req.body;
 
         await Subcategory.create({
-            name: name.toUpperCase(),
+            name: name,
             description
         })
 
         return res.status(201).json({
             ok: true,
             msg: "Subcategoria Creada"
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: "Internal Server Error",
+            error
+        })
+    }
+}
+
+/* Update subcategory Function */
+export const updateSubcategory = async (req: Request, res: Response) => {
+    try {
+
+        let { name, description } = req.body;
+        const { id } = req.params;
+
+        await Subcategory.update({ name, description }, { where: { subcategoryid: id } });
+
+        return res.status(200).json({
+            ok: true,
+            msg: "Subcategoría Actualizada"
         })
 
     } catch (error) {

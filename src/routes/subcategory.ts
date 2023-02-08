@@ -4,7 +4,7 @@ import { check } from 'express-validator';
 import { isAdminRole } from "../middlewares.ts/roles-validate";
 import { fieldsValidate } from "../middlewares.ts/validate-fields";
 import { validateJwt } from '../helpers/validate-jwt';
-import { createSubcategory, getSubcategories, assignSubcategories, deleteDSubcategory } from '../controller/subcategory';
+import { createSubcategory, getSubcategories, assignSubcategories, deleteDSubcategory, updateSubcategory } from '../controller/subcategory';
 import { verifyCategoryId, verifysubCategoryId, verifyRegisterOfCategoriesSubcategories } from '../helpers/db-helpers';
 import { validateSubcategoriesInCategory } from '../middlewares.ts/db-validate';
 
@@ -18,6 +18,17 @@ subcategoryRouter.post('/create', [
     check('description', 'La descripción es obligatoria').optional().trim().notEmpty(),
     fieldsValidate
 ], createSubcategory);
+
+/* Service - Update a Category */
+subcategoryRouter.put('/update/:id', [
+    validateJwt,
+    isAdminRole,
+    check('id', 'Formato de id incorrecto').isNumeric(),
+    check('id').custom(verifysubCategoryId),
+    check('name', 'El nombre es obligatorio').optional().trim().notEmpty(),
+    check('description', 'La descripción es obligatoria').optional().trim().notEmpty(),
+    fieldsValidate
+], updateSubcategory);
 
 /* Service - Get all subcategories availables and not availables by category */
 subcategoryRouter.get('/get_availability/:categoryid', [

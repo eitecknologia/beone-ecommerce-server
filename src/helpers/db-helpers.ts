@@ -1,4 +1,4 @@
-import { Category, Role, User, Product, Subcategory, CategorySubcategory } from "../models";
+import { Category, Role, User, Product, Subcategory, CategorySubcategory, SubcategoryProducts } from "../models";
 
 /* Create Defaul Roles */
 export const createDefaultRoles = async () => {
@@ -40,6 +40,17 @@ export const verifysubCategoryId = async (id: number) => {
 export const verifyRegisterOfCategoriesSubcategories = async (id: number) => {
     /* Search if the register exists */
     const existsubRegister = await CategorySubcategory.findOne({ where: { casubid: id } });
+    if (!existsubRegister) {
+        throw new Error(`Registro no encontrado`);
+    }
+
+    return true;
+}
+
+/* Verify if exist a register in SubcategoriesProducts table of a id */
+export const verifyRegisterOfProductInSubcategory = async (id: number) => {
+    /* Search if the register exists */
+    const existsubRegister = await SubcategoryProducts.findOne({ where: { subprodid: id } });
     if (!existsubRegister) {
         throw new Error(`Registro no encontrado`);
     }
