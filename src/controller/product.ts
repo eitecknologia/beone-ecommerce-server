@@ -10,7 +10,7 @@ export const createProduct = async (req: Request, res: Response) => {
     try {
 
         /* Get the body data */
-        const { name, description, weigth, width, mts, moq, deliverytime, fobusd, certificates, notes, stock }: Product = req.body;
+        const { name, description, weigth, width, mts, moq, deliverytime, fobusd, certificates, notes, stock, discount }: Product = req.body;
         const imagesArray: ProductImages[] = req.body.images || [];
 
         const subcategoriesIdsArray: Subcategory[] = req.body.subcategories || [];
@@ -26,7 +26,8 @@ export const createProduct = async (req: Request, res: Response) => {
             deliverytime,
             certificates,
             notes,
-            stock
+            stock,
+            discount
         })
 
         for (const { subcategoryid } of subcategoriesIdsArray) {
@@ -133,7 +134,7 @@ export const updateProduct = async (req: Request, res: Response) => {
 
         const { productid } = req.params;
         /* Get the body data */
-        const { name, description, weigth, width, mts, moq, deliverytime, fobusd, certificates, notes, stock }: Product = req.body;
+        const { name, description, weigth, width, mts, moq, deliverytime, fobusd, certificates, notes, stock, discount }: Product = req.body;
         const imagesArray: ProductImages[] = req.body.images || [];
 
         const subcategoriesIdsArray: SubcategoryProducts[] = req.body.subcategories || [];
@@ -150,6 +151,7 @@ export const updateProduct = async (req: Request, res: Response) => {
             certificates,
             notes,
             stock,
+            discount
         }, { where: { productid } })
 
         /* Product to add in subcategories */

@@ -16,6 +16,7 @@ interface Product extends Model<InferAttributes<Product>, InferCreationAttribute
     certificates: CreationOptional<string>;
     notes: CreationOptional<string>;
     stock: CreationOptional<number>;
+    discount: CreationOptional<number>;
     isactive: CreationOptional<boolean>;
     timecreated: CreationOptional<Date>;
 }
@@ -78,6 +79,11 @@ const Product = sequelize.define<Product>('beone_products', {
         type: DataTypes.INTEGER,
         allowNull: true,
         defaultValue: null
+    },
+    discount: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0
     },
     isactive: {
         type: DataTypes.BOOLEAN,

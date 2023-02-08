@@ -6,7 +6,7 @@ const imagesPath = 'eiteck/beone/images';
 
 /* Upload a file in cloudinary Function */
 export const uploadFiles = (file: fileUpload.UploadedFile | fileUpload.UploadedFile[] | undefined,
-    validatedExt = ['png', 'jpg', 'jpeg', 'gif', 'tiff', 'webp', 'psd', 'bmp']
+    validatedExt = ['png', 'jpg', 'jpeg', 'gif', 'tiff', 'webp', 'psd', 'bmp', 'jfif']
 ): Promise<string> => {
 
     return new Promise(async (resolve, reject) => {

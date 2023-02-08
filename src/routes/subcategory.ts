@@ -4,7 +4,7 @@ import { check } from 'express-validator';
 import { isAdminRole } from "../middlewares.ts/roles-validate";
 import { fieldsValidate } from "../middlewares.ts/validate-fields";
 import { validateJwt } from '../helpers/validate-jwt';
-import { createSubcategory, getSubcategories, assignSubcategories, deleteDSubcategory, updateSubcategory } from '../controller/subcategory';
+import { createSubcategory, getSubcategories, assignSubcategories, deleteDSubcategory, updateSubcategory, getSubcategoriesWithProducts } from '../controller/subcategory';
 import { verifyCategoryId, verifysubCategoryId, verifyRegisterOfCategoriesSubcategories } from '../helpers/db-helpers';
 import { validateSubcategoriesInCategory } from '../middlewares.ts/db-validate';
 
@@ -59,5 +59,11 @@ subcategoryRouter.delete('/delete_of_category/:casubid', [
     check('casubid').custom(verifyRegisterOfCategoriesSubcategories),
     fieldsValidate
 ], deleteDSubcategory);
+
+/* 
+    SERVICES TO ECOMMERCE - AUTH NOT REQUIRED
+*/
+/* Service - Get subcategories with products */
+subcategoryRouter.get('/subcategories_products', getSubcategoriesWithProducts)
 
 export default subcategoryRouter;

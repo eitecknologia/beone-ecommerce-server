@@ -26,6 +26,7 @@ productRouter.post('/create', [
     check('certificates', 'El certificado es requerido').optional().notEmpty().trim(),
     check('notes', 'Los apuntes son requeridos').optional().notEmpty().trim(),
     check('stock', 'El stock es requerido').optional().notEmpty().trim(),
+    check('discount', 'Ingrese un valor permitido').optional().notEmpty().trim().isNumeric(),
     check('images', 'Las imágenes debe ser una lista no vacía').optional().isArray().notEmpty(),
     check('images.*.url', 'El url de la imagen es obligatorio').trim().isURL(),
     fieldsValidate
@@ -64,6 +65,7 @@ productRouter.put('/update/:productid', [
     check('certificates', 'El certificado es requerido').optional().notEmpty().trim(),
     check('notes', 'Los apuntes son requeridos').optional().notEmpty().trim(),
     check('stock', 'El stock es requerido').optional().notEmpty().trim(),
+    check('discount', 'Ingrese un valor permitido').optional().notEmpty().trim().isNumeric(),
     check('images', 'Las imágenes debe ser una lista no vacía').optional().isArray().notEmpty(),
     check('images.*.url', 'El url de la imagen es obligatorio').trim().isURL(),
     check('subcategories', 'Las subcategorías debe ser una lista no vacía').optional().isArray().notEmpty(),

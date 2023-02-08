@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import Subcategory from '../models/Subcategory';
 import Category from '../models/Category';
-import { CategorySubcategory } from "../models";
+import { CategorySubcategory, Product, ProductImages, SubcategoryProducts } from "../models";
 import { Op } from 'sequelize';
+import { validatePaginateParams, infoPaginate } from '../helpers/pagination';
 
 /* Register subcategories Function */
 export const createSubcategory = async (req: Request, res: Response) => {
@@ -135,6 +136,79 @@ export const deleteDSubcategory = async (req: Request, res: Response) => {
         return res.status(200).json({
             ok: true,
             msg: "Subcategoría Eliminada"
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: "Internal Server Error",
+            error
+        })
+    }
+}
+
+
+/* Get category with products */
+export const getSubcategoriesWithProducts = async (req: Request, res: Response) => {
+    try {
+        const { page, size } = req.query;
+        const { offset, limit, pageSend, sizeSend } = await validatePaginateParams(page, size);
+
+        let subcategoryid = Number(req.query.subcategoryid) || null;
+
+        if (!subcategoryid) {
+            const getlastSubcategoryId = await Subcategory.findOne({
+                attributes: ['subcategoryid'],
+                order: [['timecreated', 'DESC']]
+            })
+
+            if (!getlastSubcategoryId) {
+                return res.status(400).json({
+                    ok: false,
+                    msg: "Por el momento no se encuentra disponible ninguna subcategoría"
+                })
+            }
+
+            subcategoryid = getlastSubcategoryId.subcategoryid;
+        } {
+            /* Validate the subcategory */
+            const existSubcategory = await Subcategory.findByPk(subcategoryid);
+            if (!existSubcategory) {
+                return res.status(400).json({
+                    ok: false,
+                    msg: "Subcategoría no encontrada"
+                })
+            }
+        }
+
+        const products = await SubcategoryProducts.findAll({
+            attributes: ['subprodid', 'timecreated'],
+            include: [{
+                model: Product,
+                as: 'product_subcategory',
+                attributes: ['productid', 'name', 'description', 'fobusd', 'stock', 'deliverytime'],
+                include: [{
+                    model: ProductImages,
+                    as: 'images',
+                    attributes: ['url']
+                }]
+            }],
+            where: { subcategoryid },
+            order: [['timecreated', 'DESC']],
+            offset: (offset - sizeSend),
+            limit
+        })
+
+        /* Calculate the total of pages */
+        const total = await SubcategoryProducts.count({ where: { subcategoryid } })
+        const totalPages = (Math.ceil(total / limit));
+        const info = await infoPaginate(totalPages, total, pageSend, sizeSend);
+
+        return res.status(200).json({
+            ok: true,
+            msg: "Listado de productos en subcategoría",
+            info,
+            products
         })
 
     } catch (error) {
