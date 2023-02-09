@@ -4,7 +4,7 @@ import { check } from 'express-validator';
 import { isAdminRole } from "../middlewares.ts/roles-validate";
 import { fieldsValidate } from "../middlewares.ts/validate-fields";
 import { validateJwt } from '../helpers/validate-jwt';
-import { createSubcategory, getSubcategories, assignSubcategories, deleteDSubcategory, updateSubcategory, getSubcategoriesWithProducts } from '../controller/subcategory';
+import { createSubcategory, getSubcategories, assignSubcategories, deleteDSubcategory, updateSubcategory, getSubcategoriesWithProducts, getSubcategoriesAvailability } from '../controller/subcategory';
 import { verifyCategoryId, verifysubCategoryId, verifyRegisterOfCategoriesSubcategories } from '../helpers/db-helpers';
 import { validateSubcategoriesInCategory } from '../middlewares.ts/db-validate';
 
@@ -36,6 +36,13 @@ subcategoryRouter.get('/get_availability/:categoryid', [
     isAdminRole,
     check('categoryid', 'Formato de id incorrecto').isNumeric(),
     check('categoryid').custom(verifyCategoryId),
+    fieldsValidate
+], getSubcategoriesAvailability);
+
+/* Service - Get all subcategories that at least contain a category */
+subcategoryRouter.get('/get_subcategories', [
+    validateJwt,
+    isAdminRole,
     fieldsValidate
 ], getSubcategories);
 

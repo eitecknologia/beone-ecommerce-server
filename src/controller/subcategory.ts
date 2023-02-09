@@ -53,8 +53,8 @@ export const updateSubcategory = async (req: Request, res: Response) => {
     }
 }
 
-/* Get all subcategories Function */
-export const getSubcategories = async (req: Request, res: Response) => {
+/* Get all subcategories availables and used Function */
+export const getSubcategoriesAvailability = async (req: Request, res: Response) => {
     try {
 
         const categoryid = req.params.categoryid;
@@ -96,6 +96,48 @@ export const getSubcategories = async (req: Request, res: Response) => {
         })
     }
 }
+/* Get all subcategories Function */
+export const getSubcategories = async (_req: Request, res: Response) => {
+    try {
+        const subcategories = await Subcategory.findAll({
+            attributes: ['subcategoryid', 'name', 'description'],
+            include: [{
+                attributes: ['categoryid'],
+                model: CategorySubcategory,
+                as: "subcategories_category",
+                required: true
+            }],
+            raw: true,
+            where: {
+                isactive: true
+            },
+            order: [['timecreated', 'DESC']]
+        })
+
+        const subcategoriesInList: Subcategory[] = [];
+
+        for (const subcategory of subcategories) {
+            const existRegister = subcategoriesInList.find(sub => sub.subcategoryid == subcategory.subcategoryid);
+            if (!existRegister) {
+                subcategoriesInList.push(subcategory)
+            }
+        }
+
+        return res.status(200).json({
+            ok: true,
+            msg: "Listado de subcategorias",
+            subcategories: subcategoriesInList
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: "Internal Server Error",
+            error
+        })
+    }
+}
+
 
 /* Assign subcategories into a category Function */
 export const assignSubcategories = async (req: Request, res: Response) => {
