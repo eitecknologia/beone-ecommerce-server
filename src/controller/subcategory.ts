@@ -186,7 +186,7 @@ export const getSubcategoriesWithProducts = async (req: Request, res: Response) 
             include: [{
                 model: Product,
                 as: 'product_subcategory',
-                attributes: ['productid', 'name', 'description', 'fobusd', 'stock', 'deliverytime'],
+                attributes: ['productid', 'name', 'description', 'fobusd', 'stock', 'deliverytime', 'discount'],
                 include: [{
                     model: ProductImages,
                     as: 'images',
