@@ -20,7 +20,7 @@ fileRouter.post('/upload', [
 fileRouter.delete('/delete', [
     validateJwt,
     isAdminRole,
-    check('url', 'Ingrese un url correcto').isURL(),
+    check('url', 'Ingrese un url correcto').notEmpty(),
     fieldsValidate
 ], deleteFile);
 
