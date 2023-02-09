@@ -17,7 +17,7 @@ fileRouter.post('/upload', [
 ], uploadFile);
 
 /* Service - Delete a file */
-fileRouter.delete('/delete', [
+fileRouter.put('/delete', [
     validateJwt,
     isAdminRole,
     check('url', 'Ingrese un url correcto').notEmpty(),
