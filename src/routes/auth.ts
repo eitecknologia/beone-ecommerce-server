@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { check } from "express-validator";
 import { fieldsValidate } from '../middlewares.ts/validate-fields';
-import { registerAdmin, loginAdmin } from '../controller/auth';
+import { registerAdmin, loginAdmin, loginGoogle, loginFacebook, loginUser, registerUser } from '../controller/auth';
 
 const authRouter: Router = Router();
 
@@ -21,5 +21,35 @@ authRouter.post('/login_admin', [
     check('password', 'Ingrese la contraseña').notEmpty(),
     fieldsValidate
 ], loginAdmin)
+
+/* Service to create an user */
+authRouter.post('/register_user', [
+    check('ci', 'El CI es obligatorio').notEmpty().isNumeric().isLength({ min: 10 }),
+    check('name', 'El nombre es obligatorio').notEmpty(),
+    check('lastname', 'El apellido es obligatorio').notEmpty(),
+    check('address', 'La dirección es obligatoria').notEmpty(),
+    check('email', 'Ingrese un correo válido').isEmail(),
+    check('password', 'La contraseña debe tener al menos seis caracteres').trim().notEmpty().isLength({ min: 6 }),
+    fieldsValidate
+], registerUser);
+
+/* Service to Login an Admin */
+authRouter.post('/login_user', [
+    check('email', 'Ingrese un correo válido').isEmail(),
+    check('password', 'Ingrese la contraseña').notEmpty(),
+    fieldsValidate
+], loginUser)
+
+/* Login with google */
+authRouter.post('/login_google', [
+    check('accessToken', 'El accessToken es obligatorio').trim().notEmpty(),
+    fieldsValidate
+], loginGoogle);
+
+/* Login with facoock */
+authRouter.post('/login_facebook', [
+    check('accessToken', 'El accessToken es obligatorio').trim().notEmpty(),
+    fieldsValidate
+], loginFacebook);
 
 export default authRouter;

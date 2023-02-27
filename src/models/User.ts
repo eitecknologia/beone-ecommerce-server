@@ -9,6 +9,8 @@ interface User extends Model<InferAttributes<User>, InferCreationAttributes<User
     address: string;
     email: string;
     password: string;
+    google: CreationOptional<boolean>;
+    facebook: CreationOptional<boolean>;
     isactive: CreationOptional<boolean | null>;
     timecreated: CreationOptional<Date>;
     roleid: number;
@@ -21,7 +23,7 @@ const User = sequelize.define<User>('beone_users', {
         autoIncrement: true
     },
     ci: {
-        type: DataTypes.STRING(13),
+        type: DataTypes.STRING(50),
         allowNull: false,
     },
     name: {
@@ -49,6 +51,16 @@ const User = sequelize.define<User>('beone_users', {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: true
+    },
+    google: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
+    },
+    facebook: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
     },
     timecreated: {
         type: DataTypes.DATE,

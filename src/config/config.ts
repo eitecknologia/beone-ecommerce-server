@@ -20,4 +20,9 @@ process.env.MAIL_PSWD = process.env.MAIL_PSWD || "qravllwtyhecyewi";
 /* CLOUDINARY */
 process.env.CLOUDINARY_URL = process.env.CLOUDINARY_URL || "cloudinary://129278158545247:J02i5Q-zlOqUyu7__UK4wIqMGvk@db6g5aoec";
 
+/* GOOGLE CLIENT ID */
+process.env.GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "973875313510-l7mikitkuip1g8ebettjl22k5fg9pj1o.apps.googleusercontent.com";
+
+/* FACEBOOK CLIENT ID */
+process.env.FACEBOOK_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "509866598005800";
 
