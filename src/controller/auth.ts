@@ -5,9 +5,10 @@ import fetch from 'node-fetch';
 import { createDefaultRoles } from '../helpers/db-helpers';
 import { Role, User } from '../models';
 import { generateRandomString } from "../helpers/random-string";
-import { sendAdminCredentials } from '../helpers/msg-email';
+import { sendAdminCredentials, recoverPasswordMsg } from '../helpers/msg-email';
 import { sendMail } from "../helpers/send-email";
 import { generateJwt } from "../helpers/generate-jwt";
+import jwt from 'jsonwebtoken';
 
 /* Register Admin Function */
 export const registerAdmin = async (req: Request, res: Response) => {
@@ -397,6 +398,94 @@ export const loginFacebook = async (req: Request, res: Response) => {
             token
         })
 
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: "Internal Server Error",
+            error
+        })
+    }
+}
+
+/* Recover Password Function */
+export const recoverPassword = async (req: Request, res: Response) => {
+    try {
+
+        const { email } = req.body;
+        const isAdmin = req.query.isAdmin;
+
+        /* Get user Data */
+        const user = await User.findOne({
+            where: {
+                email: email,
+                isactive: true,
+                ...(isAdmin == "true") ? { roleid: process.env.ADMIN_ID } : { roleid: process.env.USER_ID }
+            }
+        });
+
+        if (!user) {
+            return res.status(400).json({
+                ok: false,
+                msg: `Usuario ${email} no encontrado`,
+            });
+        }
+
+        if (user.facebook || user.google) {
+            return res.status(400).json({
+                ok: false,
+                msg: `Usuario registrado con red social`,
+            });
+        }
+
+        const { userid } = user;
+
+        /* Generate JWT */
+        const token = await generateJwt(userid);
+
+        const urlRecoverPassword = (isAdmin == "true") ? process.env.URL_RECOVER_PASSWORD_ADMIN : process.env.URL_RECOVER_PASSWORD_USER
+        const path = `${urlRecoverPassword}?userid=${userid}&token=${token}`
+
+        await sendMail(email, recoverPasswordMsg(path), "Recuperar password");
+
+        return res.status(200).json({
+            ok: true,
+            msg: `Solicitud de recuperación enviada a ${email}`
+        })
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: "Internal Server Error",
+            error
+        })
+    }
+}
+
+
+/* RECOVER PASSWORD -CLIENT */
+export const recoverPasswordReset = async (req: Request, res: Response) => {
+    try {
+        let { userid, token, password } = req.body;
+
+        const { id }: any = jwt.verify(`${token}`, `${process.env.TOKEN_SEED}`);
+
+        if (id != userid) {
+            return res.status(401).json({
+                ok: false,
+                msg: `No autorizado`
+            })
+        }
+
+        const salt = bcrypt.genSaltSync();
+        password = bcrypt.hashSync(password, salt);
+
+        await User.update({
+            password
+        }, { where: { userid: id } })
+
+        return res.status(200).json({
+            ok: true,
+            msg: `Contraseña actualizada`
+        })
     } catch (error) {
         return res.status(500).json({
             ok: false,

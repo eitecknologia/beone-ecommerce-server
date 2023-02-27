@@ -26,3 +26,7 @@ process.env.GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "973875313510-l7m
 /* FACEBOOK CLIENT ID */
 process.env.FACEBOOK_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "509866598005800";
 
+/* RECOVER PASSWORD URL */
+process.env.URL_RECOVER_PASSWORD_USER = process.env.URL_RECOVER_PASSWORD_USER || "http://localhost/";
+process.env.URL_RECOVER_PASSWORD_ADMIN = process.env.URL_RECOVER_PASSWORD_ADMIN || "http://localhost/";
+

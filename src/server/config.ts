@@ -6,6 +6,7 @@ import cors from 'cors';
 import { testRouter, authRouter, adminRouter, fileRouter, categoryRouter, productRouter, subcategoryRouter } from '../routes';
 import sequelize from '../database/config';
 import '../models/index';
+import userRouter from '../routes/user';
 
 export class Server {
 
@@ -16,6 +17,7 @@ export class Server {
         testServer: string,
         auth: string,
         admin: string,
+        user: string,
         file: string,
         category: string,
         product: string,
@@ -29,6 +31,7 @@ export class Server {
             testServer: '/',
             auth: `${this.prefix}/auth`,
             admin: `${this.prefix}/admin`,
+            user: `${this.prefix}/user`,
             file: `${this.prefix}/file`,
             category: `${this.prefix}/category`,
             subcategory: `${this.prefix}/subcategory`,
@@ -72,6 +75,7 @@ export class Server {
         this.app.use(this.paths.testServer, testRouter);
         this.app.use(this.paths.auth, authRouter);
         this.app.use(this.paths.admin, adminRouter);
+        this.app.use(this.paths.user, userRouter);
         this.app.use(this.paths.file, fileRouter);
         this.app.use(this.paths.category, categoryRouter);
         this.app.use(this.paths.product, productRouter);

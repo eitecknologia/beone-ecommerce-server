@@ -31,8 +31,7 @@ adminRouter.put('/update', [
     check('ci', 'El CI es obligatorio').optional().notEmpty().isNumeric().isLength({ min: 10 }),
     check('name', 'El nombre es obligatorio').optional().notEmpty(),
     check('lastname', 'El apellido es obligatorio').optional().notEmpty(),
-    check('province', 'La provincia es obligatoria').optional().notEmpty(),
-    check('city', 'La ciudad es obligatoria').optional().notEmpty(),
+    check('address', 'La provincia es obligatoria').optional().notEmpty(),
     check('email', 'Ingrese un correo válido').optional().isEmail(),
     check('password', 'El password debe contener al menos 6 caracteres').optional().isLength({ min: 6 }),
     fieldsValidate

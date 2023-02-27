@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { check } from "express-validator";
 import { fieldsValidate } from '../middlewares.ts/validate-fields';
-import { registerAdmin, loginAdmin, loginGoogle, loginFacebook, loginUser, registerUser } from '../controller/auth';
+import { registerAdmin, loginAdmin, loginGoogle, loginFacebook, loginUser, registerUser, recoverPassword, recoverPasswordReset } from '../controller/auth';
 
 const authRouter: Router = Router();
 
@@ -51,5 +51,18 @@ authRouter.post('/login_facebook', [
     check('accessToken', 'El accessToken es obligatorio').trim().notEmpty(),
     fieldsValidate
 ], loginFacebook);
+
+authRouter.post('/reset_password_send', [
+    check('email', 'Ingrese un correo válido').isEmail(),
+    fieldsValidate
+], recoverPassword);
+
+/* Service - Set new password */
+authRouter.post('/reset_password', [
+    check('userid', 'Id de usuario Obligatorio').notEmpty(),
+    check('token', 'Token Obligatorio').notEmpty(),
+    check('password', 'El password debe contener al menos 6 caracteres').isLength({ min: 6 }),
+    fieldsValidate
+], recoverPasswordReset);
 
 export default authRouter;
