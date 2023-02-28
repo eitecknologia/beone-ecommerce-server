@@ -321,6 +321,12 @@ export const loginGoogle = async (req: Request, res: Response) => {
         return res.status(200).json({
             ok: true,
             msg: "Login exitoso",
+            user: {
+                userid: user.userid,
+                name: user.name,
+                lastname: user.lastname,
+                email: user.email
+            },
             token
         })
 
@@ -395,6 +401,12 @@ export const loginFacebook = async (req: Request, res: Response) => {
         return res.status(200).json({
             ok: true,
             msg: "Login exitoso",
+            user: {
+                userid: user.userid,
+                name: user.name,
+                lastname: user.lastname,
+                email: user.email
+            },
             token
         })
 
