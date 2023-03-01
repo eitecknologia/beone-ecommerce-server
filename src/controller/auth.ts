@@ -165,7 +165,6 @@ export const registerUser = async (req: Request, res: Response) => {
         const salt = bcrypt.genSaltSync();
         const newPassword = bcrypt.hashSync(password, salt);
 
-
         const user = await User.create({
             ci,
             name,
@@ -176,17 +175,20 @@ export const registerUser = async (req: Request, res: Response) => {
             roleid: Number(process.env.USER_ID)
         })
 
+                
+        /* Generate JWT */
+        const token = await generateJwt(user.userid);
+
         return res.status(201).json({
             ok: true,
             msg: "Usuario Creado",
             user: {
                 userid: user.userid,
-                ci: user.ci,
                 name: user.name,
                 lastname: user.lastname,
-                address: user.address,
                 email: user.email
-            }
+            },
+            token
         })
 
     } catch (error) {
