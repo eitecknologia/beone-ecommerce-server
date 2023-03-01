@@ -9,7 +9,7 @@ interface OrderProducts extends Model<InferAttributes<OrderProducts>, InferCreat
     timecreated: CreationOptional<Date>;
 }
 
-const OrderProducts = sequelize.define<OrderProducts>('factory_order_products', {
+const OrderProducts = sequelize.define<OrderProducts>('beone_order_products', {
     orderprodid: {
         type: DataTypes.INTEGER,
         primaryKey: true,
