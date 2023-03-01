@@ -1,0 +1,6 @@
+export enum productStatus {
+    SOLICITADO = "SOLICITADO",
+    TRANSITO = "TRANSITO",
+    RECIBIDO = "RECIBIDO",
+    DESPACHADO = "DESPACHADO"
+}
