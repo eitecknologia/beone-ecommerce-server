@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { check } from 'express-validator';
 
-import { isAdminRole, userHasRole } from '../middlewares.ts/roles-validate';
+import { isAdminRole } from '../middlewares.ts/roles-validate';
 import { fieldsValidate } from "../middlewares.ts/validate-fields";
 import { validateJwt } from '../helpers/validate-jwt';
 import { availabilitySubcategories, createProduct, deleteProduct, deleteProductOfSubcategory, findProductById, updateProduct, getAllProducts } from '../controller/product';
