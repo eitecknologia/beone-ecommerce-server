@@ -8,7 +8,7 @@ export const getUserLoggedInfo = async (req: Request, res: Response) => {
 
         const userid = req.user.userid;
         const user = await User.findOne({
-            attributes: { exclude: ['password', 'isactive', 'google', 'facebook', 'timecreated', 'roleid', 'phone'] },
+            attributes: { exclude: ['password', 'isactive', 'google', 'facebook', 'timecreated', 'roleid'] },
             where: { userid }
         })
 

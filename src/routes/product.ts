@@ -33,20 +33,10 @@ productRouter.post('/create', [
 ], createProduct);
 
 /* Service - Get all products */
-productRouter.get('/get_all', [
-    validateJwt,
-    isAdminRole,
-    fieldsValidate
-], getAllProducts);
+productRouter.get('/get_all', getAllProducts);
 
 /* Service - Get product by id */
-productRouter.get('/get_by_id/:id', [
-    validateJwt,
-    userHasRole,
-    check('id', 'Formato de id incorrecto').isNumeric(),
-    check('id').custom(verifyProductId),
-    fieldsValidate
-], findProductById);
+productRouter.get('/get_by_id/:id', findProductById);
 
 /* Service - Update a product */
 productRouter.put('/update/:productid', [
