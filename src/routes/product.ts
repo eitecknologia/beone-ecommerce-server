@@ -29,6 +29,10 @@ productRouter.post('/create', [
     check('discount', 'Ingrese un valor permitido').optional().notEmpty().trim().isNumeric(),
     check('images', 'Las imágenes debe ser una lista no vacía').optional().isArray().notEmpty(),
     check('images.*.url', 'El url de la imagen es obligatorio').trim().isURL(),
+    check('colors', 'Los colores deben ser un array no vacío').optional().isArray().notEmpty(),
+    check('colors.*.colorname', 'El nombre del color es obligatorio').trim().notEmpty(),
+    check('colors.*.colorcode', 'El código del color es obligatorio').trim().notEmpty(),
+    check('colors.*.colorhex', 'El código hexadecimal del color es obligatorio').trim().notEmpty(),
     fieldsValidate
 ], createProduct);
 

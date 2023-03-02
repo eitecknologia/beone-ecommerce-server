@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { deleteFiles } from "../helpers/files";
-import { Product, ProductImages, SubcategoryProducts } from "../models";
+import { Product, ProductImages, SubcategoryProducts, ProductColors } from "../models";
 import Subcategory from '../models/Subcategory';
 import { Op } from 'sequelize';
 import { validatePaginateParams, infoPaginate } from '../helpers/pagination';
@@ -12,6 +12,7 @@ export const createProduct = async (req: Request, res: Response) => {
         /* Get the body data */
         const { name, description, weigth, width, mts, moq, deliverytime, fobusd, certificates, notes, stock, discount }: Product = req.body;
         const imagesArray: ProductImages[] = req.body.images || [];
+        const colorsArray: ProductColors[] = req.body.colors || [];
 
         const subcategoriesIdsArray: Subcategory[] = req.body.subcategories || [];
 
@@ -41,6 +42,15 @@ export const createProduct = async (req: Request, res: Response) => {
             })
         }
 
+        for (const { colorname, colorcode, colorhex } of colorsArray) {
+            await ProductColors.create({
+                colorname,
+                colorcode,
+                colorhex,
+                productid: product.productid
+            })
+        }
+
         return res.status(201).json({
             ok: true,
             msg: "Producto Creado"
@@ -63,7 +73,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
         const { offset, limit, pageSend, sizeSend } = await validatePaginateParams(page, size);
 
         const { count: total, rows: products } = await Product.findAndCountAll({
-            attributes: ['productid', 'name', 'description', 'timecreated'],
+            attributes: ['productid', 'name', 'description', 'fobusd', 'discount','timecreated'],
             include: [{
                 model: ProductImages,
                 as: 'images',
