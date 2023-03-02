@@ -13,7 +13,7 @@ import jwt from 'jsonwebtoken';
 /* Register Admin Function */
 export const registerAdmin = async (req: Request, res: Response) => {
     try {
-        let { ci, name, lastname, email, address }: User = req.body;
+        let { ci, name, lastname, email, address, phone }: User = req.body;
 
         /* Search if the roles table is Ready */
         const rolesExists = await Role.findByPk(process.env.ADMIN_ID);
@@ -53,6 +53,7 @@ export const registerAdmin = async (req: Request, res: Response) => {
             address,
             email,
             password,
+            phone,
             roleid: Number(process.env.ADMIN_ID)
         })
 
@@ -141,7 +142,7 @@ export const loginAdmin = async (req: Request, res: Response) => {
 /* Register User Function */
 export const registerUser = async (req: Request, res: Response) => {
     try {
-        let { ci, name, lastname, email, address, password }: User = req.body;
+        let { ci, name, lastname, email, address, password, phone }: User = req.body;
 
         /* Search if the user exists */
         const userExist = await User.findOne({ where: { email, isactive: true } });
@@ -171,11 +172,12 @@ export const registerUser = async (req: Request, res: Response) => {
             lastname,
             address,
             email,
+            phone,
             password: newPassword,
             roleid: Number(process.env.USER_ID)
         })
 
-                
+
         /* Generate JWT */
         const token = await generateJwt(user.userid);
 

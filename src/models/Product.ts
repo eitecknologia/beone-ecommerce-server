@@ -2,6 +2,9 @@ import { DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOpt
 import sequelize from '../database/config';
 import ProductImages from './ProductImage';
 import SubcategoryProducts from './SubcategoryProduct';
+import OrderProducts from './OrderProducts';
+import UserCart from './UserCart';
+import ProductColors from './ProductColor';
 
 interface Product extends Model<InferAttributes<Product>, InferCreationAttributes<Product>> {
     productid: CreationOptional<number>;
@@ -122,5 +125,40 @@ ProductImages.belongsTo(Product, {
     foreignKey: 'productid',
     as: 'image'
 });
+
+/* Relation with productcolors table */
+Product.hasMany(ProductColors, {
+    foreignKey: 'productid',
+    sourceKey: 'productid',
+    as: 'colors'
+});
+
+ProductColors.belongsTo(Product, {
+    foreignKey: 'productid',
+    as: 'color'
+});
+
+/* Relation with OrderProducts */
+Product.hasMany(OrderProducts, {
+    foreignKey: "productid",
+    sourceKey: "productid"
+})
+
+OrderProducts.belongsTo(Product, {
+    foreignKey: "productid"
+})
+
+/* Relation with UserCart */
+Product.hasMany(UserCart, {
+    foreignKey: "productid",
+    sourceKey: "productid",
+    as: "products_cart"
+})
+
+UserCart.belongsTo(Product, {
+    foreignKey: "productid",
+    as: "product_cart"
+})
+
 
 export default Product;

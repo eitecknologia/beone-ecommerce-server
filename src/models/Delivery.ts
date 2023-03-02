@@ -1,5 +1,6 @@
 import { DataTypes, InferCreationAttributes, InferAttributes, Model, CreationOptional } from 'sequelize';
 import sequelize from '../database/config';
+import Order from './Order';
 
 interface Delivery extends Model<InferAttributes<Delivery>, InferCreationAttributes<Delivery>> {
     deliveryid: CreationOptional<number>;
@@ -12,7 +13,7 @@ interface Delivery extends Model<InferAttributes<Delivery>, InferCreationAttribu
     timecreated: CreationOptional<Date>;
 }
 
-const Delivery = sequelize.define<Delivery>('beone_delivery_info', {
+const Delivery = sequelize.define<Delivery>('beone_delivery_order', {
     deliveryid: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -50,6 +51,17 @@ const Delivery = sequelize.define<Delivery>('beone_delivery_info', {
 }, {
     timestamps: false
 })
+
+/* Relation with Delivery */
+Delivery.hasOne(Order, {
+    foreignKey: "deliveryid",
+    sourceKey: "deliveryid"
+})
+
+Order.belongsTo(Delivery, {
+    foreignKey: 'deliveryid'
+})
+
 
 
 export default Delivery;

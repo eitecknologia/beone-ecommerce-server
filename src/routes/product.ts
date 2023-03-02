@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { check } from 'express-validator';
 
-import { isAdminRole } from "../middlewares.ts/roles-validate";
+import { isAdminRole, userHasRole } from '../middlewares.ts/roles-validate';
 import { fieldsValidate } from "../middlewares.ts/validate-fields";
 import { validateJwt } from '../helpers/validate-jwt';
 import { availabilitySubcategories, createProduct, deleteProduct, deleteProductOfSubcategory, findProductById, updateProduct, getAllProducts } from '../controller/product';
@@ -42,7 +42,7 @@ productRouter.get('/get_all', [
 /* Service - Get product by id */
 productRouter.get('/get_by_id/:id', [
     validateJwt,
-    isAdminRole,
+    userHasRole,
     check('id', 'Formato de id incorrecto').isNumeric(),
     check('id').custom(verifyProductId),
     fieldsValidate

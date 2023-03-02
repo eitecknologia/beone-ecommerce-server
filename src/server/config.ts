@@ -3,10 +3,19 @@ import fileUpload = require('express-fileupload');
 import morgan = require('morgan');
 import cors from 'cors';
 
-import { testRouter, authRouter, adminRouter, fileRouter, categoryRouter, productRouter, subcategoryRouter } from '../routes';
+import {
+    testRouter,
+    authRouter,
+    adminRouter,
+    fileRouter,
+    categoryRouter,
+    productRouter,
+    subcategoryRouter,
+    usercartRouter
+} from '../routes';
 import sequelize from '../database/config';
-import '../models/index';
 import userRouter from '../routes/user';
+import '../models/index';
 
 export class Server {
 
@@ -22,6 +31,7 @@ export class Server {
         category: string,
         product: string,
         subcategory: string,
+        cart: string
     }
 
     constructor() {
@@ -36,6 +46,7 @@ export class Server {
             category: `${this.prefix}/category`,
             subcategory: `${this.prefix}/subcategory`,
             product: `${this.prefix}/product`,
+            cart: `${this.prefix}/cart`,
         }
 
         /* Middleware */
@@ -80,6 +91,7 @@ export class Server {
         this.app.use(this.paths.category, categoryRouter);
         this.app.use(this.paths.product, productRouter);
         this.app.use(this.paths.subcategory, subcategoryRouter);
+        this.app.use(this.paths.cart, usercartRouter);
 
         /* Service not found - 404 */
         this.app.use((_req, res: Response) => {
@@ -93,14 +105,9 @@ export class Server {
     async dbConnection() {
         /* Connection to the DB Postgres*/
         try {
-            const dbConnection = async () => {
-                await Promise.all([
-                    /* await sequelize.sync(); - Use when the DB has been changed */
-                    // await sequelize.sync(),
-                    sequelize.authenticate(),
-                ])
-            }
-            await dbConnection();
+            /* await sequelize.sync(); - Use when the DB has been changed */
+            // await sequelize.sync();
+            await sequelize.authenticate();
             console.log('Connection has been established successfully.');
         } catch (error) {
             console.error('Unable to connect to the database:', error);

@@ -6,6 +6,12 @@ import Role from './Role';
 import SubcategoryProducts from './SubcategoryProduct';
 import CategorySubcategory from './CategorySubcategory';
 import Subcategory from './Subcategory';
+import Order from './Order';
+import OrderProducts from './OrderProducts';
+import Delivery from './Delivery';
+import OrderUsers from './OrderUser';
+import UserCart from './UserCart';
+import ProductColors from './ProductColor';
 
 export {
     User,
@@ -15,5 +21,11 @@ export {
     Subcategory,
     SubcategoryProducts,
     Product,
-    ProductImages
+    ProductImages,
+    Delivery,
+    Order,
+    OrderProducts,
+    OrderUsers,
+    UserCart,
+    ProductColors
 }

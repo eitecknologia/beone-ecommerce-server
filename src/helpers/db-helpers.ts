@@ -1,3 +1,4 @@
+import { Meta } from "express-validator";
 import { Category, Role, User, Product, Subcategory, CategorySubcategory, SubcategoryProducts } from "../models";
 
 /* Create Defaul Roles */
@@ -75,6 +76,25 @@ export const verifyProductId = async (id: number) => {
     const existProduct = await Product.findOne({ where: { productid: id, isactive: true } });
     if (!existProduct) {
         throw new Error(`Producto no encontrado`);
+    }
+
+    return true;
+}
+
+/* Verify the stock of product */
+export const verifyStockProduct = async (amount: number, req: Meta) => {
+    const { productid } = req.req.body;
+    const product = await Product.findOne({ where: { productid, isactive: true } });
+    if (!product) {
+        throw new Error(`Producto no encontrado`);
+    }
+
+    const { stock } = product;
+
+    if (stock) {
+        if (amount > stock) {
+            throw new Error(`Sin stock`);
+        }
     }
 
     return true;

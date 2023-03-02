@@ -8,7 +8,7 @@ export const getUserLoggedInfo = async (req: Request, res: Response) => {
 
         const userid = req.user.userid;
         const user = await User.findOne({
-            attributes: { exclude: ['password', 'isactive', 'google', 'facebook', 'timecreated', 'roleid'] },
+            attributes: { exclude: ['password', 'isactive', 'google', 'facebook', 'timecreated', 'roleid', 'phone'] },
             where: { userid }
         })
 
@@ -31,7 +31,7 @@ export const getUserLoggedInfo = async (req: Request, res: Response) => {
 export const updateUser = async (req: Request, res: Response) => {
     try {
 
-        let { ci, name, lastname, email, password, address }: User = req.body;
+        let { ci, name, lastname, email, password, address, phone }: User = req.body;
         const { userid } = req.user;
 
         /* Verify that the new credentials not exist */
@@ -63,7 +63,7 @@ export const updateUser = async (req: Request, res: Response) => {
         }
 
         await User.update({
-            name, lastname, email, password, ci, address
+            name, lastname, email, password, ci, address, phone
         }, { where: { userid } });
 
         return res.status(200).json({

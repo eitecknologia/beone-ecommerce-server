@@ -12,6 +12,7 @@ authRouter.post('/register_admin', [
     check('lastname', 'El apellido es obligatorio').notEmpty(),
     check('address', 'La dirección es obligatoria').notEmpty(),
     check('email', 'Ingrese un correo válido').isEmail(),
+    check('phone', 'El teléfono es obligatorio').optional().notEmpty(),
     fieldsValidate
 ], registerAdmin);
 
@@ -30,6 +31,7 @@ authRouter.post('/register_user', [
     check('address', 'La dirección es obligatoria').notEmpty(),
     check('email', 'Ingrese un correo válido').isEmail(),
     check('password', 'La contraseña debe tener al menos seis caracteres').trim().notEmpty().isLength({ min: 6 }),
+    check('phone', 'El teléfono es obligatorio').optional().notEmpty(),
     fieldsValidate
 ], registerUser);
 

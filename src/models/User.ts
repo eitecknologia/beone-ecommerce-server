@@ -1,5 +1,7 @@
 import { DataTypes, InferCreationAttributes, InferAttributes, Model, CreationOptional } from 'sequelize';
 import sequelize from '../database/config';
+import OrderUsers from './OrderUser';
+import UserCart from './UserCart';
 
 interface User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     userid: CreationOptional<number>;
@@ -9,6 +11,7 @@ interface User extends Model<InferAttributes<User>, InferCreationAttributes<User
     address: string;
     email: string;
     password: string;
+    phone: CreationOptional<string>;
     google: CreationOptional<boolean>;
     facebook: CreationOptional<boolean>;
     isactive: CreationOptional<boolean | null>;
@@ -52,6 +55,11 @@ const User = sequelize.define<User>('beone_users', {
         allowNull: true,
         defaultValue: true
     },
+    phone: {
+        type: DataTypes.STRING(20),
+        allowNull: true,
+        defaultValue: null
+    },
     google: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
@@ -75,5 +83,25 @@ const User = sequelize.define<User>('beone_users', {
 }, {
     timestamps: false
 });
+
+/* Relation with OrderUsers */
+User.hasMany(OrderUsers, {
+    foreignKey: "userid",
+    sourceKey: "userid"
+})
+
+OrderUsers.belongsTo(User, {
+    foreignKey: "userid"
+})
+
+/* Relation with UserCart */
+User.hasMany(UserCart, {
+    foreignKey: "userid",
+    sourceKey: "userid"
+})
+
+UserCart.belongsTo(User, {
+    foreignKey: "userid"
+})
 
 export default User;

@@ -6,6 +6,7 @@ import categoryRouter from './category';
 import productRouter from './product';
 import subcategoryRouter from './subcategory';
 import userRouter from './user';
+import usercartRouter from './usercart';
 
 export {
     testRouter,
@@ -15,5 +16,6 @@ export {
     fileRouter,
     categoryRouter,
     subcategoryRouter,
-    productRouter
+    productRouter,
+    usercartRouter
 }

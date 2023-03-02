@@ -4,3 +4,9 @@ export enum productStatus {
     RECIBIDO = "RECIBIDO",
     DESPACHADO = "DESPACHADO"
 }
+
+export enum orderStatus {
+    INGRESADO = "INGRESADO",
+    PROCESO = "PROCESO",
+    SOLICITADO = "SOLICITADO"
+}

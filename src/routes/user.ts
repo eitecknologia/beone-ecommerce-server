@@ -23,6 +23,7 @@ userRouter.put('/update', [
     check('lastname', 'El apellido es obligatorio').optional().notEmpty(),
     check('address', 'La provincia es obligatoria').optional().notEmpty(),
     check('email', 'Ingrese un correo válido').optional().isEmail(),
+    check('phone', 'El teléfono es obligatorio').optional().notEmpty(),
     check('password', 'El password debe contener al menos 6 caracteres').optional().isLength({ min: 6 }),
     fieldsValidate
 ], updateUser)
