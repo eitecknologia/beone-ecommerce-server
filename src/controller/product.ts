@@ -73,7 +73,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
         const { offset, limit, pageSend, sizeSend } = await validatePaginateParams(page, size);
 
         const { count: total, rows: products } = await Product.findAndCountAll({
-            attributes: ['productid', 'name', 'description', 'fobusd', 'discount','timecreated'],
+            attributes: ['productid', 'name', 'description', 'fobusd', 'discount', 'timecreated'],
             include: [{
                 model: ProductImages,
                 as: 'images',
@@ -119,6 +119,11 @@ export const findProductById = async (req: Request, res: Response) => {
                     model: ProductImages,
                     as: 'images',
                     attributes: ['url']
+                },
+                {
+                    model: ProductColors,
+                    as: 'colors',
+                    attributes: ['colorid', 'colorname', 'colorcode', 'colorhex']
                 }
             ]
         });
@@ -198,6 +203,58 @@ export const updateProduct = async (req: Request, res: Response) => {
         })
     }
 }
+
+/* Add new color Function */
+export const addColorOfProduct = async (req: Request, res: Response) => {
+    try {
+
+        const { colorname, colorcode, colorhex }: ProductColors = req.body;
+        const { productid } = req.params;
+
+        await ProductColors.create({
+            productid: Number(productid),
+            colorname,
+            colorcode,
+            colorhex
+        })
+
+
+        return res.status(201).json({
+            ok: true,
+            msg: "Color Agregado"
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: "Internal Server Error",
+            error
+        })
+    }
+}
+
+/* Delete color of product Function */
+export const deleteColorOfProduct = async (req: Request, res: Response) => {
+    try {
+
+        const { colorid } = req.params;
+
+        await ProductColors.destroy({ where: { colorid } })
+
+        return res.status(201).json({
+            ok: true,
+            msg: "Color Eliminado"
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: "Internal Server Error",
+            error
+        })
+    }
+}
+
 
 /* Get availability of subcategories of a product Function */
 export const availabilitySubcategories = async (req: Request, res: Response) => {

@@ -4,8 +4,8 @@ import { check } from 'express-validator';
 import { isAdminRole } from '../middlewares.ts/roles-validate';
 import { fieldsValidate } from "../middlewares.ts/validate-fields";
 import { validateJwt } from '../helpers/validate-jwt';
-import { availabilitySubcategories, createProduct, deleteProduct, deleteProductOfSubcategory, findProductById, updateProduct, getAllProducts } from '../controller/product';
-import { verifyProductId, verifysubCategoryId, verifyRegisterOfProductInSubcategory } from '../helpers/db-helpers';
+import { availabilitySubcategories, createProduct, deleteProduct, deleteProductOfSubcategory, findProductById, updateProduct, getAllProducts, addColorOfProduct, deleteColorOfProduct } from '../controller/product';
+import { verifyProductId, verifysubCategoryId, verifyRegisterOfProductInSubcategory, verifyColorId } from '../helpers/db-helpers';
 
 const productRouter: Router = Router();
 
@@ -67,6 +67,28 @@ productRouter.put('/update/:productid', [
     fieldsValidate
 ], updateProduct);
 
+/* Service to create new color in product */
+productRouter.post('/add_color/:productid', [
+    validateJwt,
+    isAdminRole,
+    check('productid', 'Formato de id incorrecto').isNumeric(),
+    check('productid').custom(verifyProductId),
+    check('colorname', 'El nombre del color es obligatorio').trim().notEmpty(),
+    check('colorcode', 'El código del color es obligatorio').trim().notEmpty(),
+    check('colorhex', 'El código hexadecimal del color es obligatorio').trim().notEmpty(),
+    fieldsValidate
+], addColorOfProduct);
+
+/* Service to delete a color of product */
+productRouter.delete('/delete_color/:colorid', [
+    validateJwt,
+    isAdminRole,
+    check('colorid', 'Formato de id incorrecto').isNumeric(),
+    check('colorid').custom(verifyColorId),
+    fieldsValidate
+], deleteColorOfProduct);
+
+/* Service to get availability of subcategories */
 productRouter.get('/get_availability_subcategories/:productid', [
     validateJwt,
     isAdminRole,

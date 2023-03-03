@@ -233,7 +233,8 @@ export const getSubcategoriesWithProducts = async (req: Request, res: Response) 
                     model: ProductImages,
                     as: 'images',
                     attributes: ['url']
-                }]
+                }],
+                where: { isactive: true }
             }],
             where: { subcategoryid },
             order: [['timecreated', 'DESC']],
@@ -242,7 +243,7 @@ export const getSubcategoriesWithProducts = async (req: Request, res: Response) 
         })
 
         /* Calculate the total of pages */
-        const total = await SubcategoryProducts.count({ where: { subcategoryid } })
+        const total = await SubcategoryProducts.length
         const totalPages = (Math.ceil(total / limit));
         const info = await infoPaginate(totalPages, total, pageSend, sizeSend);
 

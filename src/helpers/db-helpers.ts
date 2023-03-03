@@ -1,5 +1,6 @@
 import { Meta } from "express-validator";
 import { Category, Role, User, Product, Subcategory, CategorySubcategory, SubcategoryProducts } from "../models";
+import ProductColors from '../models/ProductColor';
 
 /* Create Defaul Roles */
 export const createDefaultRoles = async () => {
@@ -80,6 +81,18 @@ export const verifyProductId = async (id: number) => {
 
     return true;
 }
+
+/* Verify if exist color id */
+export const verifyColorId = async (id: number) => {
+    /* Search if the color exists */
+    const existColor = await ProductColors.findOne({ where: { colorid: id } });
+    if (!existColor) {
+        throw new Error(`Color no encontrado`);
+    }
+
+    return true;
+}
+
 
 /* Verify the stock of product */
 export const verifyStockProduct = async (amount: number, req: Meta) => {
