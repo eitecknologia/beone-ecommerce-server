@@ -72,7 +72,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
         const { page, size } = req.query;
         const { offset, limit, pageSend, sizeSend } = await validatePaginateParams(page, size);
 
-        const { count: total, rows: products } = await Product.findAndCountAll({
+        const products = await Product.findAll({
             attributes: ['productid', 'name', 'description', 'fobusd', 'discount', 'timecreated'],
             include: [{
                 model: ProductImages,
@@ -85,7 +85,9 @@ export const getAllProducts = async (req: Request, res: Response) => {
             limit
         })
 
+
         /* Calculate the total of pages */
+        const total = await Product.count({ where: { isactive: true } })
         const totalPages = (Math.ceil(total / limit));
         const info = await infoPaginate(totalPages, total, pageSend, sizeSend);
 
