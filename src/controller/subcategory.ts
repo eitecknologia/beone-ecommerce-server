@@ -243,7 +243,22 @@ export const getSubcategoriesWithProducts = async (req: Request, res: Response) 
         })
 
         /* Calculate the total of pages */
-        const total = products.length
+        const totalProducts = await SubcategoryProducts.findAll({
+            attributes: ['subprodid'],
+            include: [{
+                model: Product,
+                as: 'product_subcategory',
+                attributes: ['productid'],
+                where: { isactive: true }
+            }],
+            raw: true,
+            where: { subcategoryid }
+        })
+
+        console.log(totalProducts);
+
+
+        const total = totalProducts.length
         const totalPages = (Math.ceil(total / limit));
         const info = await infoPaginate(totalPages, total, pageSend, sizeSend);
 
