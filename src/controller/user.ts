@@ -38,12 +38,9 @@ export const updateUser = async (req: Request, res: Response) => {
         const userTotal = await User.count({
             where:
             {
-                [Op.or]: [{
-                    [Op.and]: [{ ci, roleid: process.env.USER_ID, userid: { [Op.ne]: userid } }]
-                },
-                {
-                    [Op.and]: [{ email, userid: { [Op.ne]: userid } }]
-                }
+                [Op.or]: [
+                    { [Op.and]: [{ ci, roleid: process.env.USER_ID, userid: { [Op.ne]: userid } }] },
+                    { [Op.and]: [{ email, userid: { [Op.ne]: userid } }] }
                 ]
             }
         })
