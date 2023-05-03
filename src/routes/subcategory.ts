@@ -1,12 +1,12 @@
 import { Router } from "express";
 import { check } from 'express-validator';
 
-import { isAdminRole } from "../middlewares.ts/roles-validate";
-import { fieldsValidate } from "../middlewares.ts/validate-fields";
+import { isAdminRole } from "../middlewares/roles-validate";
+import { fieldsValidate } from "../middlewares/validate-fields";
 import { validateJwt } from '../helpers/validate-jwt';
 import { createSubcategory, getSubcategories, assignSubcategories, deleteDSubcategory, updateSubcategory, getSubcategoriesWithProducts, getSubcategoriesAvailability } from '../controller/subcategory';
 import { verifyCategoryId, verifysubCategoryId, verifyRegisterOfCategoriesSubcategories } from '../helpers/db-helpers';
-import { validateSubcategoriesInCategory } from '../middlewares.ts/db-validate';
+import { validateSubcategoriesInCategory } from '../middlewares/db-validate';
 
 const subcategoryRouter: Router = Router();
 

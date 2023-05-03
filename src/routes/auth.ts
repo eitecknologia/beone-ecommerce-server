@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { check } from "express-validator";
-import { fieldsValidate } from '../middlewares.ts/validate-fields';
+import { fieldsValidate } from '../middlewares/validate-fields';
 import { registerAdmin, loginAdmin, loginGoogle, loginFacebook, loginUser, registerUser, recoverPassword, recoverPasswordReset } from '../controller/auth';
 
 const authRouter: Router = Router();
