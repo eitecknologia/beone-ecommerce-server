@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { fieldsValidate } from '../middlewares.ts/validate-fields';
+import { fieldsValidate } from '../middlewares/validate-fields';
 import { addToCart, myCartInfo } from '../controller/usercart';
-import { isUserRole } from '../middlewares.ts/roles-validate';
+import { isUserRole } from '../middlewares/roles-validate';
 import { validateJwt } from '../helpers/validate-jwt';
 import { check } from 'express-validator';
 import { verifyStockProduct } from '../helpers/db-helpers';

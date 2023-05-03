@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { check } from 'express-validator';
 
-import { isAdminRole } from "../middlewares.ts/roles-validate";
-import { fieldsValidate } from "../middlewares.ts/validate-fields";
+import { isAdminRole } from "../middlewares/roles-validate";
+import { fieldsValidate } from "../middlewares/validate-fields";
 import { createCategory, getCategories, findCategoryById, updateCategory, deleteCategory, getCategoriesWithSubcategories } from '../controller/category';
 import { validateJwt } from '../helpers/validate-jwt';
 import { verifyCategoryId } from "../helpers/db-helpers";

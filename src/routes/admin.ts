@@ -2,8 +2,8 @@ import { Router } from "express";
 import { check } from 'express-validator';
 
 import { validateJwt } from '../helpers/validate-jwt';
-import { isAdminRole } from '../middlewares.ts/roles-validate';
-import { fieldsValidate } from '../middlewares.ts/validate-fields';
+import { isAdminRole } from '../middlewares/roles-validate';
+import { fieldsValidate } from '../middlewares/validate-fields';
 import { verifyAdminId } from '../helpers/db-helpers';
 import { deleteAdmin, findAdminById, getAllAdmins, updateAdmin } from '../controller/admin';
 

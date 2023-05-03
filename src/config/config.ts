@@ -1,10 +1,10 @@
 /* Enviroment variables default */
 
 /* PORT */
-process.env.PORT = process.env.PORT || "8002" as string
+process.env.PORT = process.env.PORT || "8003" as string
 
 /* DATABASE URL CONNECTION */
-process.env.DATABASE_URL = process.env.DATABASE_URL || "postgres://beone:rBzS5SIMjgi1wr5zejXMv3NZx9yBVKNt@dpg-cf9tljcgqg47p3oogp0g-a.oregon-postgres.render.com/beonedb" as string
+process.env.DATABASE_URL = process.env.DATABASE_URL || "postgresql://postgres:Zq3zRNud8VTz0Mwo6Li7@containers-us-west-37.railway.app:7075/railway" as string
 
 /* ROLES ID */
 process.env.ADMIN_ID = process.env.ADMIN_ID || "1";

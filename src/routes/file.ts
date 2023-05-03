@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { validateJwt } from '../helpers/validate-jwt';
 import { check } from 'express-validator';
-import { isAdminRole } from '../middlewares.ts/roles-validate';
-import { fieldsValidate } from '../middlewares.ts/validate-fields';
-import { validateFile } from "../middlewares.ts/validate-files";
+import { isAdminRole } from '../middlewares/roles-validate';
+import { fieldsValidate } from '../middlewares/validate-fields';
+import { validateFile } from "../middlewares/validate-files";
 import { uploadFile, deleteFile } from '../controller/file';
 
 const fileRouter: Router = Router();

@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { check } from 'express-validator';
 
-import { isAdminRole } from '../middlewares.ts/roles-validate';
-import { fieldsValidate } from "../middlewares.ts/validate-fields";
+import { isAdminRole } from '../middlewares/roles-validate';
+import { fieldsValidate } from "../middlewares/validate-fields";
 import { validateJwt } from '../helpers/validate-jwt';
 import { availabilitySubcategories, createProduct, deleteProduct, deleteProductOfSubcategory, findProductById, updateProduct, getAllProducts, addColorOfProduct, deleteColorOfProduct } from '../controller/product';
 import { verifyProductId, verifysubCategoryId, verifyRegisterOfProductInSubcategory, verifyColorId } from '../helpers/db-helpers';
